@@ -12,6 +12,16 @@ export const initialState = {
 
 export const AppReducer = (state, action) => {
     switch (action.type) {
+        case 'REGISTER_SUCCESS':
+            return {
+                ...state,
+                message: action.payload.message
+            }
+        case 'REGISTER_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
         case 'LOGIN_SUCCESS':
             return {
                 ...state,
@@ -37,6 +47,13 @@ export const AppReducer = (state, action) => {
                 ...state,
                 events: action.payload.events
             }
-
+        case 'CLEAR_MESSAGES':
+            return {
+                ...state,
+                message: null,
+                error: null
+            }
+        default:
+            return state
     }
 }

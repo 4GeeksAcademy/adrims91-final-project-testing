@@ -29,6 +29,26 @@ export const AppProvider = ({ children }) => {
             console.error(error)
         }
     }
+    const register = async ({ username, email, password }) => {
+        try {
+            const response = await fetch('https://reimagined-space-computing-machine-4jg4r96r57jxh45g-3001.app.github.dev/api/users', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, email, password })
+            })
+            if (response.ok) {
+                const data = await response.json()
+                dispatch({ type: 'REGISTER_SUCCESS', payload: { "message": data.message } })
+            } else {
+                const errorData = await response.json()
+                dispatch({ type: 'REGISTER_ERROR', payload: { "error": errorData.error } })
+            }
+        } catch (error) {
+            dispatch({ type: 'REGISTER_ERROR', payload: { "error": error.message } })
+        }
+    }
 
     const getEvents = async () => {
         try {
@@ -49,8 +69,9 @@ export const AppProvider = ({ children }) => {
     }
 
 
+
     return (
-        <Context.Provider value={{ state, dispatch, login, getEvents, logout }}>
+        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register }}>
             {children}
         </Context.Provider>
     )

@@ -8,8 +8,8 @@ import { Logout } from "./Logout";
 export const Navbar = () => {
 	const { state } = useContext(Context)
 	return (
-		<nav className="navbar m-2">
-			<div><Link className="btn btn-success me-1" to={'/'}>Home</Link></div>
+		<nav className="navbar">
+			<div><Link className="navbar-brand ms-2" to={'/'}>Home</Link></div>
 			<div>
 				{!state.isAuthenticated ? <><Login />
 					<Register /></> : <Logout />}

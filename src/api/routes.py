@@ -1,9 +1,8 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, Blueprint
 from api.models import db, User, Events, Favorite
-from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
@@ -17,16 +16,17 @@ CORS(api)
 @api.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json()
-    if not all([data['username'], data['email'], data['password'], data['first_name'], data['last_name'], data['phone']]):
+    print(data)
+    if "username" not in data or "email" not in data or "password" not in data:
         return jsonify({"error": "Faltan datos obligatorios."}), 400
     existing_user = User.query.filter_by(username=data['username']).first()
     if existing_user:
         return jsonify({"error": "El usuario ya existe."}), 400
-    new_user = User(username=data['username'], email=data['email'], password=data['password'], first_name=data['first_name'], last_name=data['last_name'], phone=data['phone'], is_active=True)
+    new_user = User(username=data['username'], email=data['email'], password=data['password'], is_active=True)
     try:
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({"message": "Usuario creado correctamente", "username": new_user.username, "email": new_user.email, "first_name": new_user.first_name, "last_name": new_user.last_name, "phone": new_user.phone}), 201
+        return jsonify({"message": "Usuario creado correctamente", "username": new_user.username, "email": new_user.email}), 201
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "error de servidor.", "detalles": str(e)}), 500

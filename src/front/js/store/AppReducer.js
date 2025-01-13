@@ -32,6 +32,11 @@ export const AppReducer = (state, action) => {
                 last_name: action.payload.last_name,
                 token: action.payload.token
             }
+        case 'LOGIN_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
         case 'LOGOUT':
             return {
                 ...state,

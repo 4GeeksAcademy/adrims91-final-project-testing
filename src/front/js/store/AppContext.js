@@ -21,14 +21,26 @@ export const AppProvider = ({ children }) => {
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('first_name', data.first_name)
                 localStorage.setItem('last_name', data.last_name)
-                dispatch({ type: 'LOGIN_SUCCESS', payload: { "message": "Autenticado correctamente", "username": data.username, "first_name": data.first_name, "last_name": data.last_name, "token": data.token } })
+                dispatch({ type: 'LOGIN_SUCCESS', payload: { "message": data.message, "username": data.username, "first_name": data.first_name, "last_name": data.last_name, "token": data.token } })
+                setTimeout(() => {
+                    dispatch({ type: 'CLEAR_MESSAGES' })
+                    window.location.reload()
+                }, 1500);
             } else {
-                console.error('error')
+                const errorData = await response.json()
+                dispatch({ type: 'LOGIN_ERROR', payload: { "error": errorData.error } })
+                setTimeout(() => {
+                    dispatch({ type: 'CLEAR_MESSAGES' })
+                }, 1500);
             }
         } catch (error) {
-            console.error(error)
+            dispatch({ type: 'LOGIN_ERROR', payload: { "error": error.message } })
+            setTimeout(() => {
+                dispatch({ type: 'CLEAR_MESSAGES' })
+            }, 1500);
         }
     }
+
     const register = async ({ username, email, password }) => {
         try {
             const response = await fetch('https://reimagined-space-computing-machine-4jg4r96r57jxh45g-3001.app.github.dev/api/users', {
@@ -41,12 +53,22 @@ export const AppProvider = ({ children }) => {
             if (response.ok) {
                 const data = await response.json()
                 dispatch({ type: 'REGISTER_SUCCESS', payload: { "message": data.message } })
+                setTimeout(() => {
+                    dispatch({ type: 'CLEAR_MESSAGES' })
+                    window.location.reload()
+                }, 1500);
             } else {
                 const errorData = await response.json()
                 dispatch({ type: 'REGISTER_ERROR', payload: { "error": errorData.error } })
+                setTimeout(() => {
+                    dispatch({ type: 'CLEAR_MESSAGES' })
+                }, 1500);
             }
         } catch (error) {
             dispatch({ type: 'REGISTER_ERROR', payload: { "error": error.message } })
+            setTimeout(() => {
+                dispatch({ type: 'CLEAR_MESSAGES' })
+            }, 1500);
         }
     }
 
@@ -66,9 +88,10 @@ export const AppProvider = ({ children }) => {
     }
     const logout = () => {
         dispatch({ type: 'LOGOUT', payload: { "message": "Cierre de sesión completado" } })
+        setTimeout(() => {
+            dispatch({ type: 'CLEAR_MESSAGES' })
+        }, 1500);
     }
-
-
 
     return (
         <Context.Provider value={{ state, dispatch, login, getEvents, logout, register }}>

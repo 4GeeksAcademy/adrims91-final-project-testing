@@ -4,6 +4,7 @@ import { Login } from "./Login";
 import { Register } from "./Register";
 import { Context } from "../store/AppContext";
 import { Logout } from "./Logout";
+import { CreateEvent } from "./CreateEvent";
 
 export const Navbar = () => {
 	const { state } = useContext(Context)
@@ -12,7 +13,7 @@ export const Navbar = () => {
 			<div><Link className="navbar-brand ms-2" to={'/'}>Home</Link></div>
 			<div>
 				{!state.isAuthenticated ? <><Login />
-					<Register /></> : <Logout />}
+					<Register /></> : <><CreateEvent /> <Logout /> </>}
 
 			</div>
 		</nav>

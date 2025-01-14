@@ -92,9 +92,31 @@ export const AppProvider = ({ children }) => {
             dispatch({ type: 'CLEAR_MESSAGES' })
         }, 1500);
     }
+    const createEvent = async ({ title, description, date, time, location, image, price }) => {
+        const token = localStorage.getItem('token')
+        try {
+            const response = await fetch('https://reimagined-space-computing-machine-4jg4r96r57jxh45g-3001.app.github.dev/api/events', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': "application/json",
+                    "Authorization": 'Bearer ' + token
+                },
+                body: JSON.stringify({ title, description, date, time, location, image, price })
+            })
+            if (response.ok) {
+                const data = await response.json()
+                dispatch({ type: 'CREATE_EVENT_SUCCESS', payload: { "title": data.title, "description": data.description, "date": data.date, "time": data.time, "location": data.location, "image": data.image, "price": data.price } })
+            } else {
+                const errorData = await response.json()
+                dispatch({ type: 'CREATE_EVENT_ERROR', payload: { "error": errorData.error } })
+            }
+        } catch (error) {
+            dispatch({ type: 'CREATE_EVENT_ERROR', payload: { "error": error.message } })
+        }
+    }
 
     return (
-        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register }}>
+        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register, createEvent }}>
             {children}
         </Context.Provider>
     )

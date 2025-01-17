@@ -7,7 +7,7 @@ export const Logout = () => {
 
     return (
         <button onClick={logout} className="btn btn-danger me-2">
-            Logout
+            Cerrar sesión
         </button>
     )
 }

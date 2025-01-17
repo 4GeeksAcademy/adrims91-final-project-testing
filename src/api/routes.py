@@ -2,10 +2,14 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, Blueprint
+import os
 from api.models import db, User, Events, Favorite
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+from datetime import datetime
+
 
 api = Blueprint('api', __name__)
 
@@ -44,23 +48,46 @@ def login():
     token = create_access_token(identity=user.username)
     return jsonify({"message": "Login correcto.", "token": token, "username": user.username, "first_name": user.first_name, "last_name": user.last_name})
     
-@api.route('events', methods=['POST'])
+@api.route('/events', methods=['POST'])
 @jwt_required()
 def create_event():
-    data = request.get_json()
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
-    new_event = Events(title=data['title'], description=data['description'], date=data['date'], time=data['time'], location=data['location'], user_id=user.id)
+    data = request.form
+    if not "title" in data or not "description" in data:
+        return jsonify({"error": "Faltan datos obligatorios."}), 400
+    try:
+        date_str = data['date']
+        time_str = data['time']
+        date = datetime.strptime(date_str, '%d-%m-%Y')
+        time = datetime.strptime(time_str, '%H:%M').time()
+    except ValueError:
+        return jsonify({"error": "Formato de fecha u hora incorrecto."}), 400
+
+    current_user_username = get_jwt_identity()
+    user = User.query.filter_by(username=current_user_username).first()
+    
+    new_event = Events(
+        title=data['title'],
+        description=data['description'],
+        date=date,
+        time=time,
+        location=data['location'],
+        price=data['price'],
+        user_id=user.id
+    )
+    
     try:
         db.session.add(new_event)
         db.session.commit()
         return jsonify({"message": "Evento añadido satisfactoriamente."}), 201
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": "Error de servidor."}), 500
+        return jsonify({"error": f"Error de servidor, {e}"}), 500
 
-@api.route('events', methods=['GET'])
+
+
+@api.route('/events', methods=['GET'])
 def get_events():
     events = Events.query.all()
     events = list(map(lambda x: x.serialize(), events))
     return jsonify({"events": events})
+

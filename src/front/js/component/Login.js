@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { Context } from "../store/AppContext";
 
 export const Login = () => {
@@ -6,27 +6,40 @@ export const Login = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
+    const modalRef = useRef(null)
 
+    const openModal = () => {
+        modalRef.current.style.display = 'block'
+        modalRef.current.classList.add('show')
+    }
 
+    const closeModal = () => {
+        modalRef.current.style.display = 'none'
+        modalRef.current.classList.remove('show')
+    }
+
+    useEffect(() => {
+        setUsername('')
+        setPassword('')
+        closeModal()
+    }, [state.isAuthenticated])
 
     return (
         <>
-            <button type="button" className="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+            <button onClick={openModal} type="button" className="btn btn-primary me-2">
                 Iniciar sesión
             </button>
-            <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div ref={modalRef} className="modal fade" tabIndex="-1" style={{ display: 'none' }} aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="loginModalLabel">Inicia sesión</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button onClick={closeModal} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
                             <form onSubmit={(e) => {
                                 e.preventDefault()
                                 login({ username, password })
-                                setUsername('')
-                                setPassword('')
                             }}>
                                 <div className="mb-3">
                                     <label htmlFor="inputUsername" className="form-label">Nombre de usuario</label>
@@ -47,3 +60,4 @@ export const Login = () => {
         </>
     )
 }
+

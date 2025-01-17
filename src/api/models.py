@@ -39,12 +39,13 @@ class User(db.Model):
 
 class Events(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(30), unique=False, nullable=False)
+    title = db.Column(db.String(50), unique=False, nullable=False)
     description = db.Column(db.String(150), unique=False, nullable=False)
-    date = db.Column(db.String(12), unique=False, nullable=False)
-    time = db.Column(db.String(8), unique=False, nullable=False)
-    location = db.Column(db.String(20), unique=False, nullable=False)
-    image = db.Column(db.String(150), unique=False, nullable=False)
+    date = db.Column(db.String(20), default=datetime.now, unique=False, nullable=True)
+    time = db.Column(db.String(20), unique=False, nullable=True)
+    location = db.Column(db.String(20), unique=False, nullable=True)
+    price = db.Column(db.Integer)
+    image = db.Column(db.String(255), unique=False, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -59,6 +60,7 @@ class Events(db.Model):
             'description': self.description,
             'date': self.date,
             'time': self.time,
+            'image': self.image,
             'location': self.location,
             'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             'updated_at': self.updated_at.strftime('%Y-%m-%d %H:%M:%S'),

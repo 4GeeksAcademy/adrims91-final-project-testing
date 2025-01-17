@@ -61,7 +61,8 @@ export const AppReducer = (state, action) => {
         case 'CREATE_EVENT_SUCCESS':
             return {
                 ...state,
-                events: [...state.events, { "title": action.payload.title, "description": action.payload.description, "date": action.payload.date, "time": action.payload.time, "location": action.payload.location, "image": action.payload.image, "price": action.payload.image }]
+                events: [...state.events, action.payload.events],
+                message: action.payload.message
             }
         case 'CREATE_EVENT_ERROR':
             return {

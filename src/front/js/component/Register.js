@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../store/AppContext";
 
 export const Register = () => {
@@ -8,25 +8,42 @@ export const Register = () => {
     const [password, setPassword] = useState('')
 
 
+    const modalRef = useRef(null)
+
+    const openModal = () => {
+        modalRef.current.style.display = 'block'
+        modalRef.current.classList.add('show')
+    }
+
+    const closeModal = () => {
+        modalRef.current.style.display = 'none'
+        modalRef.current.classList.remove('show')
+    }
+
+    useEffect(() => {
+        setUsername('')
+        setPassword('')
+        setEmail('')
+        closeModal()
+    }, [state.message])
+
     return (
         <>
-            <button type="button" className="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#registerModal">
+            <button onClick={openModal} type="button" className="btn btn-primary me-2">
                 Registrarse
             </button>
-            <div className="modal fade" id="registerModal" tabIndex="-1" aria-labelledby="registerLabel" aria-hidden="true">
+            <div ref={modalRef} className="modal fade" tabIndex="-1" style={{ display: 'none' }} aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="registerLabel">Registro</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button onClick={closeModal} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <form onSubmit={(e) => {
+                            <form onSubmit={async (e) => {
                                 e.preventDefault()
-                                register({ username, email, password })
-                                setUsername('')
-                                setPassword('')
-                                setEmail('')
+                                await register({ username, email, password })
+
                             }}>
                                 <div className="mb-3">
                                     <label htmlFor="inputFirstName" className="form-label">Nombre de usuario</label>

@@ -20,6 +20,9 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
+
+app.config["UPLOAD_FOLDER"] = "src/upload"
+
 app.config["JWT_SECRET_KEY"] = "super-mega-secret"
 jwt = JWTManager(app)
 

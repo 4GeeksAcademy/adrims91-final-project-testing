@@ -24,7 +24,6 @@ export const AppProvider = ({ children }) => {
                 dispatch({ type: 'LOGIN_SUCCESS', payload: { "message": data.message, "username": data.username, "first_name": data.first_name, "last_name": data.last_name, "token": data.token } })
                 setTimeout(() => {
                     dispatch({ type: 'CLEAR_MESSAGES' })
-                    window.location.reload()
                 }, 1500);
             } else {
                 const errorData = await response.json()
@@ -55,7 +54,6 @@ export const AppProvider = ({ children }) => {
                 dispatch({ type: 'REGISTER_SUCCESS', payload: { "message": data.message } })
                 setTimeout(() => {
                     dispatch({ type: 'CLEAR_MESSAGES' })
-                    window.location.reload()
                 }, 1500);
             } else {
                 const errorData = await response.json()
@@ -92,7 +90,7 @@ export const AppProvider = ({ children }) => {
             dispatch({ type: 'CLEAR_MESSAGES' })
         }, 1500);
     }
-    const createEvent = async ({ title, description, date, time, location, image, price }) => {
+    const createEvent = async (formData) => {
         const token = localStorage.getItem('token')
         try {
             const response = await fetch('https://reimagined-space-computing-machine-4jg4r96r57jxh45g-3001.app.github.dev/api/events', {
@@ -101,11 +99,14 @@ export const AppProvider = ({ children }) => {
                     'Content-Type': "application/json",
                     "Authorization": 'Bearer ' + token
                 },
-                body: JSON.stringify({ title, description, date, time, location, image, price })
+                body: JSON.stringify(formData)
             })
             if (response.ok) {
                 const data = await response.json()
-                dispatch({ type: 'CREATE_EVENT_SUCCESS', payload: { "title": data.title, "description": data.description, "date": data.date, "time": data.time, "location": data.location, "image": data.image, "price": data.price } })
+                dispatch({ type: 'CREATE_EVENT_SUCCESS', payload: { "events": data, "message": "Evento creado correctamente." } })
+                setTimeout(() => {
+                    dispatch({ type: 'CLEAR_MESSAGES' })
+                }, 1500);
             } else {
                 const errorData = await response.json()
                 dispatch({ type: 'CREATE_EVENT_ERROR', payload: { "error": errorData.error } })

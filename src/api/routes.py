@@ -6,7 +6,6 @@ import os
 from api.models import db, User, Events, Favorite
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import secure_filename
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import datetime
 
@@ -51,13 +50,13 @@ def login():
 @api.route('/events', methods=['POST'])
 @jwt_required()
 def create_event():
-    data = request.form
+    data = request.get_json()
     if not "title" in data or not "description" in data:
         return jsonify({"error": "Faltan datos obligatorios."}), 400
     try:
         date_str = data['date']
         time_str = data['time']
-        date = datetime.strptime(date_str, '%d-%m-%Y')
+        date = datetime.strptime(date_str, '%Y-%m-%d')
         time = datetime.strptime(time_str, '%H:%M').time()
     except ValueError:
         return jsonify({"error": "Formato de fecha u hora incorrecto."}), 400
@@ -72,6 +71,7 @@ def create_event():
         time=time,
         location=data['location'],
         price=data['price'],
+        image=data['image'],
         user_id=user.id
     )
     
@@ -89,5 +89,23 @@ def create_event():
 def get_events():
     events = Events.query.all()
     events = list(map(lambda x: x.serialize(), events))
-    return jsonify({"events": events})
+    return jsonify({"events": events}), 200
 
+@api.route('/events/<int:event_id>', methods=['DELETE'])
+@jwt_required()
+def delete_event(event_id):
+    user_username = get_jwt_identity()
+    user = User.query.filter_by(username=user_username).first()
+    event = Events.query.filter_by(id=event_id).first()
+    
+    if not event:
+        return jsonify({"error": "No has seleccionado ningún evento para eliminar."}), 404
+    if event.user_id != user.id:
+        return jsonify({"error": "Solo puedes eliminar un evento que sea propio."}), 401
+    try:
+        db.session.delete(event)
+        db.session.commit()
+        return jsonify({"message": "Evento eliminado correctamente."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500

@@ -1,13 +1,7 @@
-import React, { useContext, useEffect } from "react";
-import { Context } from "../store/AppContext";
+import React from "react";
 import { Cards } from "../component/Cards"
 
 export const Home = () => {
-	const { state, getEvents } = useContext(Context)
-	useEffect(() => {
-		getEvents()
-	}, [state.events.title])
-
 
 
 	return (

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/AppContext";
+import * as filestack from "filestack-js";
 
 export const CreateEventInputs = ({ closeModal }) => {
     const { state, createEvent } = useContext(Context);
@@ -10,22 +11,41 @@ export const CreateEventInputs = ({ closeModal }) => {
     const [time, setTime] = useState('');
     const [location, setLocation] = useState('');
     const [price, setPrice] = useState('');
+    const [image, setImage] = useState(undefined)
+
+    const client = filestack.init('AVQNdAjjIRHW0xnKKEipvz');
+
+    const handleUpload = async () => {
+        const picker = client.picker({
+            accept: 'image/*',
+            maxFiles: 1,
+            onUploadDone: (result) => {
+                const file = result.filesUploaded[0];
+                setImage(file.url);
+            }
+        });
+        picker.open();
+    }
 
 
+    useEffect(() => {
+        closeModal()
+    }, [state.message])
 
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const formData = {}
-        formData.title = title
-        formData.description = description;
-        formData.date = date;
-        formData.time = time
-        formData.location = location;
-        formData.price = price;
+        const formData = {
+            title,
+            description,
+            date,
+            time,
+            location,
+            price,
+            image
+        };
         try {
             await createEvent(formData)
-            closeModal()
         } catch (error) {
             state.error = error
         }
@@ -96,6 +116,12 @@ export const CreateEventInputs = ({ closeModal }) => {
                         type="number"
                     />
                 </div>
+                <div className="col">
+                    {!image ? <button onClick={handleUpload}
+                        className="form-control mb-3 p-2 m-auto"
+                        alt="Selecciona una foto para tu evento">Selecciona una foto para tu evento</button> : <div><p className="text-success">Foto subida.</p></div>}
+
+                </div>
                 <input
                     style={{ float: 'right' }}
                     className="btn btn-success"
@@ -103,9 +129,8 @@ export const CreateEventInputs = ({ closeModal }) => {
                     type="submit"
                 />
                 {state.message && <div className='text-center text-success'><p>Evento creado con éxito</p></div>}
-                {state.error && <div className='text-center text-success'><p>Ha ocurrido un error en la creación del evento.</p></div>}
+                {state.error && <div className='text-center text-danger'><p>Ha ocurrido un error en la creación del evento.</p></div>}
             </form>
-
         </div>
     );
 };

@@ -69,6 +69,17 @@ export const AppReducer = (state, action) => {
                 ...state,
                 error: action.payload.error
             }
+        case 'DELETE_EVENT_SUCCESS':
+            return {
+                ...state,
+                events: action.payload.events,
+                message: action.payload.message
+            }
+        case 'DELETE_EVENT_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
         default:
             return state
     }

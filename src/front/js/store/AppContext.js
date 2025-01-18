@@ -110,14 +110,40 @@ export const AppProvider = ({ children }) => {
             } else {
                 const errorData = await response.json()
                 dispatch({ type: 'CREATE_EVENT_ERROR', payload: { "error": errorData.error } })
+                setTimeout(() => {
+                    dispatch({ type: 'CLEAR_MESSAGES' })
+                }, 1500);
             }
         } catch (error) {
             dispatch({ type: 'CREATE_EVENT_ERROR', payload: { "error": error.message } })
+            setTimeout(() => {
+                dispatch({ type: 'CLEAR_MESSAGES' })
+            }, 1500);
+        }
+    }
+    const deleteEvent = async (event_id) => {
+        const token = localStorage.getItem('token')
+        try {
+            const response = await fetch(`https://reimagined-space-computing-machine-4jg4r96r57jxh45g-3001.app.github.dev/api/events/${event_id}`, {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            })
+            if (response.ok) {
+                dispatch({ type: 'DELETE_EVENT_SUCCESS', payload: { "events": state.events.filter(event => event.id != event_id), "message": "Evento eliminado correctamente." } })
+            } else {
+                dispatch({ type: 'DELETE_EVENT_ERROR', payload: { "error": "Ha ocurrido un error al eliminar el evento." } })
+            }
+        } catch (error) {
+            dispatch({ type: 'DELETE_EVENT_ERROR', payload: { "error": error.message } })
         }
     }
 
+
     return (
-        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register, createEvent }}>
+        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register, createEvent, deleteEvent }}>
             {children}
         </Context.Provider>
     )

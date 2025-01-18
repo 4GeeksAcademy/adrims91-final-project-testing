@@ -43,7 +43,7 @@ export const Login = () => {
                             }}>
                                 <div className="mb-3">
                                     <label htmlFor="inputUsername" className="form-label">Nombre de usuario</label>
-                                    <input onChange={(e) => setUsername(e.target.value)} value={username} type="text" className="form-control" id="inputUsername" />
+                                    <input onChange={(e) => setUsername(e.target.value.toLowerCase())} value={username} type="text" className="form-control" id="inputUsername" />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="inputPassword" className="form-label">Contraseña</label>

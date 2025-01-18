@@ -75,8 +75,10 @@ export const CreateEventInputs = ({ closeModal }) => {
                     />
                 </div>
                 <div className="col p-1">
+                    <label htmlFor="fecha">Fecha</label>
                     <input
                         onChange={(e) => setDate(e.target.value)}
+                        id="fecha"
                         type="date"
                         value={date.toString()}
                         className="form-control mb-3 p-2"
@@ -84,8 +86,10 @@ export const CreateEventInputs = ({ closeModal }) => {
                     />
                 </div>
                 <div className="col p-1">
+                    <label htmlFor="hora">Hora</label>
                     <input
                         onChange={(e) => setTime(e.target.value)}
+                        id="hora"
                         type="time"
                         value={time.toString()}
                         className="form-control mb-3 p-2"

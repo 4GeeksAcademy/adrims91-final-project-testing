@@ -58,7 +58,7 @@ def create_event():
     try:
         date_str = data['date']
         time_str = data['time']
-        date = datetime.strptime(date_str, '%Y-%m-%d')
+        date = datetime.strptime(date_str, '%d-%m-%Y')
         time = datetime.strptime(time_str, '%H:%M').time()
     except ValueError:
         return jsonify({"error": "Formato de fecha u hora incorrecto."}), 400

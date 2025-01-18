@@ -80,9 +80,8 @@ export const CreateEventInputs = ({ closeModal }) => {
                         onChange={(e) => setDate(e.target.value)}
                         id="fecha"
                         type="date"
-                        value={date.toString()}
+                        value={date}
                         className="form-control mb-3 p-2"
-
                     />
                 </div>
                 <div className="col p-1">
@@ -91,9 +90,8 @@ export const CreateEventInputs = ({ closeModal }) => {
                         onChange={(e) => setTime(e.target.value)}
                         id="hora"
                         type="time"
-                        value={time.toString()}
+                        value={time}
                         className="form-control mb-3 p-2"
-
                     />
                 </div>
                 <div className="col p-1">
@@ -102,13 +100,13 @@ export const CreateEventInputs = ({ closeModal }) => {
                         value={location}
                         className="form-select mb-3 p-2"
                         aria-label="Default select example"
-
                     >
                         <option value="">Selecciona una ubicación</option>
                         <option value="Madrid">Madrid</option>
                         <option value="Barcelona">Barcelona</option>
                         <option value="Valencia">Valencia</option>
-                        <option value="Málaga">Málaga</option>
+                        <option value="Malaga">Málaga</option>
+                        <option value="Almuñecar">Almuñécar</option>
                     </select>
                 </div>
                 <div className="col">

@@ -1,13 +1,11 @@
 export const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: !!localStorage.getItem('token'),
-    username: localStorage.getItem('username'),
-    first_name: localStorage.getItem('first_name'),
-    last_name: localStorage.getItem('last_name'),
     isLoading: false,
     error: null,
     message: null,
-    events: []
+    events: [],
+    userData: []
 }
 
 export const AppReducer = (state, action) => {
@@ -27,9 +25,6 @@ export const AppReducer = (state, action) => {
                 ...state,
                 isAuthenticated: true,
                 message: action.payload.message,
-                username: action.payload.username,
-                first_name: action.payload.first_name,
-                last_name: action.payload.last_name,
                 token: action.payload.token
             }
         case 'LOGIN_ERROR':
@@ -42,10 +37,7 @@ export const AppReducer = (state, action) => {
                 ...state,
                 message: action.payload.message,
                 token: localStorage.removeItem('token'),
-                isAuthenticated: false,
-                username: localStorage.removeItem('username'),
-                first_name: localStorage.removeItem('first_name'),
-                last_name: localStorage.removeItem('last_name'),
+                isAuthenticated: false
             }
         case 'GET_EVENTS':
             return {
@@ -76,6 +68,28 @@ export const AppReducer = (state, action) => {
                 message: action.payload.message
             }
         case 'DELETE_EVENT_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
+        case 'GET_USER_DATA_SUCCESS':
+            return {
+                ...state,
+                userData: action.payload.userData,
+                message: action.payload.message
+            }
+        case 'GET_USER_DATA_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
+        case 'UPDATE_USER_DATA_SUCCESS':
+            return {
+                ...state,
+                userData: action.payload.userData,
+                message: action.payload.message
+            }
+        case 'UPDATE_USER_DATA_ERROR':
             return {
                 ...state,
                 error: action.payload.error

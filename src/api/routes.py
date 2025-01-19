@@ -8,8 +8,6 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import datetime
-import requests
-import base64
 
 
 api = Blueprint('api', __name__)
@@ -47,7 +45,7 @@ def login():
     if data['password'] != user.password:
         return jsonify({"error": "Contraseña incorrecta."}), 401
     token = create_access_token(identity=user.username)
-    return jsonify({"message": "Login correcto.", "token": token, "username": user.username, "first_name": user.first_name, "last_name": user.last_name})
+    return jsonify({"message": "Login correcto.", "token": token})
     
 @api.route('/events', methods=['POST'])
 @jwt_required()
@@ -58,7 +56,7 @@ def create_event():
     try:
         date_str = data['date']
         time_str = data['time']
-        date = datetime.strptime(date_str, '%d-%m-%Y')
+        date = datetime.strptime(date_str, '%Y-%m-%d')
         time = datetime.strptime(time_str, '%H:%M').time()
     except ValueError:
         return jsonify({"error": "Formato de fecha u hora incorrecto."}), 400
@@ -111,3 +109,38 @@ def delete_event(event_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+@api.route('/user')
+@jwt_required()
+def get_user_data():
+    current_user_username = get_jwt_identity()
+    user = User.query.filter_by(username=current_user_username).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    return jsonify(user.serialize())
+@api.route('/update_user', methods=['PUT'])
+@jwt_required()
+def update_user_data():
+    data = request.get_json()
+    current_user_username = get_jwt_identity()
+    user = User.query.filter_by(username=current_user_username).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    if data.get("username"):
+        user.username = data['username']
+    if data.get("email"):
+        user.email = data['email']
+    if data.get("password"):
+        user.password = data['password']
+    if data.get("firstName"):
+        user.first_name = data['firstName']
+    if data.get("lastName"):
+        user.last_name = data['lastName']
+    if data.get("residence"):
+        user.residence = data['residence']
+    if data.get("phone"):
+        user.phone = data['phone']
+    if data.get("bio"):
+        user.bio = data['bio']
+    db.session.commit()
+    return jsonify({"message": "Datos actualizados correctamente."})
+    

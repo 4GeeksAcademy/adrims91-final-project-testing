@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Home } from "./pages/home";
 import { Navbar } from "./component/Navbar";
 import { AppProvider } from "./store/AppContext";
-import { Profile } from "./component/Profile";
+import { ProfileDetails } from "./component/ProfileDetails";
 import { CreateEvent } from "./component/CreateEvent";
+import { UserForm } from "./component/UserForm";
 
 //create your first component
 const Layout = () => {
@@ -16,7 +17,8 @@ const Layout = () => {
                 <Routes>
                     <Route element={<CreateEvent />} path="/events" />
                     <Route element={<Home />} path="/" />
-                    <Route element={<Profile />} path="/profile" />
+                    <Route element={<ProfileDetails />} path="/profile" />
+                    <Route element={<UserForm />} path="/userForm" />
                     <Route element={<h1>Not found!</h1>} path="*" />
                 </Routes>
             </Router>

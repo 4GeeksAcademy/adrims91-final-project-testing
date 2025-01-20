@@ -5,6 +5,7 @@ export const initialState = {
     error: null,
     message: null,
     events: [],
+    eventDetails: [],
     userData: []
 }
 
@@ -90,6 +91,16 @@ export const AppReducer = (state, action) => {
                 message: action.payload.message
             }
         case 'UPDATE_USER_DATA_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
+        case 'EVENT_DETAIL_SUCCESS':
+            return {
+                ...state,
+                eventDetails: action.payload.eventDetails
+            }
+        case 'EVENT_DETAIL_ERROR':
             return {
                 ...state,
                 error: action.payload.error

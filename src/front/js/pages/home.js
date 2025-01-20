@@ -5,7 +5,7 @@ import { Cards } from "../component/Cards"
 export const Home = () => {
 
 	return (
-		<div className="text-center mt-5">
+		<div className="text-center m-auto rounded shadow ">
 			<Cards />
 		</div>
 	);

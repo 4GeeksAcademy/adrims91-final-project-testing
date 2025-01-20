@@ -91,6 +91,13 @@ def get_events():
     events = list(map(lambda x: x.serialize(), events))
     return jsonify({"events": events}), 200
 
+@api.route('/event/<int:event_id>', methods=['GET'])
+def get_event(event_id):
+    event = Events.query.filter_by(id=event_id)
+    event = list(map(lambda x: x.serialize(), event))
+    return jsonify(event), 200
+    
+
 @api.route('/events/<int:event_id>', methods=['DELETE'])
 @jwt_required()
 def delete_event(event_id):

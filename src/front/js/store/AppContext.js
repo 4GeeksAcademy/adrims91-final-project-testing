@@ -82,6 +82,17 @@ export const AppProvider = ({ children }) => {
             console.error(error)
         }
     }
+    const getEvent = async (event_id) => {
+        try {
+            const response = await fetch(`https://reimagined-space-computing-machine-4jg4r96r57jxh45g-3001.app.github.dev/api/event/${event_id}`)
+            if (response.ok) {
+                const data = await response.json()
+                dispatch({ type: 'EVENT_DETAIL_SUCCESS', payload: { "eventDetails": data } })
+            }
+        } catch (error) {
+            dispatch({ type: 'EVENT_DETAIL_ERROR', payload: { "error": "Error de servidor." } })
+        }
+    }
     const logout = () => {
         dispatch({ type: 'LOGOUT', payload: { "message": "Cierre de sesión completado" } })
         setTimeout(() => {
@@ -158,7 +169,7 @@ export const AppProvider = ({ children }) => {
             })
             if (response.ok) {
                 const data = await response.json()
-                dispatch({ type: 'GET_USER_DATA_SUCCESS', payload: { "message": "Datos recuperados correctamente.", "userData": data } })
+                dispatch({ type: 'GET_USER_DATA_SUCCESS', payload: { "userData": data } })
                 setTimeout(() => {
                     dispatch({ type: 'CLEAR_MESSAGES' })
                 }, 1500);
@@ -210,7 +221,7 @@ export const AppProvider = ({ children }) => {
 
 
     return (
-        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register, createEvent, deleteEvent, getUserData, updateUserData }}>
+        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register, createEvent, deleteEvent, getUserData, updateUserData, getEvent }}>
             {children}
         </Context.Provider>
     )

@@ -40,7 +40,7 @@ export const ProfileDetails = () => {
                         <Link to={'/userForm'} className="btn btn-warning">Modificar datos</Link>
                     </div>
                 </ul>
-                {state.message && <div className="text-center"><p className="text-success">Datos actualizados correctamente</p></div>}
+                {state.userData.message && <div className="text-center"><p className="text-success">Datos actualizados correctamente</p></div>}
             </div>
         </>
     )

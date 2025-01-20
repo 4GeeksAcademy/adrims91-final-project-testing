@@ -44,7 +44,7 @@ def login():
         return jsonify({"error": "El usuario no existe."}), 404
     if data['password'] != user.password:
         return jsonify({"error": "Contraseña incorrecta."}), 401
-    token = create_access_token(identity=user.username)
+    token = create_access_token(identity=user.username, expires_delta=datetime.timedelta(days=5))
     return jsonify({"message": "Login correcto.", "token": token})
     
 @api.route('/events', methods=['POST'])

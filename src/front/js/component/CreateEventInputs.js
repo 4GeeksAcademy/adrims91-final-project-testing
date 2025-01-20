@@ -59,8 +59,10 @@ export const CreateEventInputs = ({ closeModal }) => {
                         onChange={(e) => setTitle(e.target.value)}
                         value={title}
                         className="form-control mb-3 p-2"
-                        placeholder="Titulo"
+                        placeholder="Titulo (10/20 caracteres)"
                         type="text"
+                        minLength={'10'}
+                        maxLength={'20'}
                         required
                     />
                 </div>

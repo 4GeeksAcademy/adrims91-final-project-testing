@@ -1,26 +1,85 @@
+/* styles/cards.css */
+
+.container {
+    font-family: 'Arial', sans-serif;
+    margin-top: 50px;
+}
+
 .card {
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .card:hover {
     transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.card-img-top {
-    height: 200px;
+.card img {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 350px;
     object-fit: cover;
 }
 
-.text-primary {
-    font-weight: bold;
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: #007bff;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #6c757d;
 }
 
 .btn-success {
     background-color: #28a745;
     border-color: #28a745;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .btn-success:hover {
     background-color: #218838;
     border-color: #1e7e34;
+}
+
+.text-muted {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Personalizar colores y tamaños de Bootstrap */
+.btn {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+}
+
+.text-primary {
+    color: #3498db !important;
+}
+
+.text-success {
+    color: #2ecc71 !important;
+}
+
+.text-danger {
+    color: #e74c3c !important;
+}
+
+/* Estilos personalizados */
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #e74c3c;
+    font-size: 1.2rem;
+}
+
+.row {
+    justify-content: center;
 }

@@ -7,7 +7,7 @@ from api.models import db, User, Events, Favorite
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 api = Blueprint('api', __name__)
@@ -44,7 +44,7 @@ def login():
         return jsonify({"error": "El usuario no existe."}), 404
     if data['password'] != user.password:
         return jsonify({"error": "Contraseña incorrecta."}), 401
-    token = create_access_token(identity=user.username, expires_delta=datetime.timedelta(days=5))
+    token = create_access_token(identity=user.username, expires_delta=timedelta(days=5))
     return jsonify({"message": "Login correcto.", "token": token})
     
 @api.route('/events', methods=['POST'])

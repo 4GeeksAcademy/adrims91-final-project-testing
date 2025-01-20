@@ -39,7 +39,6 @@ export const UserForm = () => {
         setphone('')
         setBio('')
         navigate('/profile')
-
     }
 
     return (

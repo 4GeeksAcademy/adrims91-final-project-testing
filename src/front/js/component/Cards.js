@@ -9,7 +9,7 @@ export const Cards = () => {
 
     useEffect(() => {
         getEvents();
-    }, [state.userData]);
+    }, [state.userData, state.message]);
 
     return (
         <div className="container mt-5 mb-5 text-center fs-3">
@@ -24,8 +24,6 @@ export const Cards = () => {
                                 <Link to={`/event/${event.id}`} className="btn btn-success">Ver detalles del evento</Link>
                             </div>
                         </div>
-                        {state.message && <div className='text-center text-success'><p>{state.message}</p></div>}
-                        {state.error && <div className='text-center text-danger'><p>{state.error}</p></div>}
                     </div>
                 )) : (
                     <div className="col-12 m-auto mt-5 p-5 w-100">
@@ -33,6 +31,8 @@ export const Cards = () => {
                     </div>
                 )}
             </div>
+            {state.message && <div className='text-center text-success'><p>{state.message}</p></div>}
+            {state.error && <div className='text-center text-danger'><p>{state.error}</p></div>}
         </div>
     );
 };

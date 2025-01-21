@@ -6,8 +6,7 @@ export const initialState = {
     message: null,
     events: [],
     eventDetails: [],
-    userData: [],
-    searchedEvents: sessionStorage.getItem('filteredEvents') || []
+    userData: []
 }
 
 export const AppReducer = (state, action) => {
@@ -109,7 +108,7 @@ export const AppReducer = (state, action) => {
         case 'SEARCH_EVENTS_SUCCESS':
             return {
                 ...state,
-                searchedEvents: action.payload.searchedEvents
+                events: action.payload.searchedEvents
             }
         case 'SEARCH_EVENTS_ERROR':
             return {

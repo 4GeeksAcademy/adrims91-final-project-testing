@@ -1,16 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/AppContext";
-import { useNavigate } from "react-router-dom";
 
 export const Searchbar = () => {
-    const navigate = useNavigate()
     const { searchEvents } = useContext(Context)
     const [searchInput, setSearchInput] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault()
         searchEvents(searchInput)
-        navigate('/searchbarResults')
     }
 
     return (

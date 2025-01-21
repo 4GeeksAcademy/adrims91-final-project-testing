@@ -32,22 +32,23 @@ export const Login = () => {
             <div ref={modalRef} className="modal fade" tabIndex="-1" style={{ display: 'none' }} aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="loginModalLabel">Inicia sesión</h1>
+                        <div className="modal-header text-center">
+                            <h2 className="modal-title fs-3" id="loginModalLabel">Inicia sesión</h2>
                             <button onClick={closeModal} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
                             <form onSubmit={(e) => {
                                 e.preventDefault()
                                 login({ username, password })
+
                             }}>
                                 <div className="mb-3">
                                     <label htmlFor="inputUsername" className="form-label">Nombre de usuario</label>
-                                    <input onChange={(e) => setUsername(e.target.value.toLowerCase())} value={username} type="text" className="form-control" id="inputUsername" />
+                                    <input onChange={(e) => setUsername(e.target.value.toLowerCase())} value={username} type="text" className="form-control shadow" id="inputUsername" />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="inputPassword" className="form-label">Contraseña</label>
-                                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" className="form-control" id="inputPassword" />
+                                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" className="form-control shadow" id="inputPassword" />
                                 </div>
                                 <button type="submit" className="btn btn-success">Enviar</button>
                             </form>

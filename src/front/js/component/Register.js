@@ -47,15 +47,15 @@ export const Register = () => {
                             }}>
                                 <div className="mb-3">
                                     <label htmlFor="inputFirstName" className="form-label">Nombre de usuario</label>
-                                    <input onChange={(e) => setUsername(e.target.value.toLowerCase())} value={username} type="text" className="form-control" id="inputFirstName" />
+                                    <input onChange={(e) => setUsername(e.target.value.toLowerCase())} value={username} type="text" className="form-control shadow" id="inputFirstName" />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="inputEmail" className="form-label">Email</label>
-                                    <input onChange={(e) => setEmail(e.target.value.toLowerCase())} value={email} type="email" className="form-control" id="inputEmail" />
+                                    <input onChange={(e) => setEmail(e.target.value.toLowerCase())} value={email} type="email" className="form-control shadow" id="inputEmail" />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="inputPassword" className="form-label">Contraseña</label>
-                                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" className="form-control" id="inputPassword" />
+                                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" className="form-control shadow" id="inputPassword" />
                                 </div>
                                 <button type="submit" className="btn btn-success">Enviar</button>
                             </form>

@@ -18,7 +18,7 @@ CORS(api)
 
 @api.route('/users', methods=['POST'])
 def create_user():
-    data = request.get_json()
+    data = request.get_json(silent=True)
     print(data)
     if "username" not in data or "email" not in data or "password" not in data:
         return jsonify({"error": "Faltan datos obligatorios."}), 400
@@ -82,6 +82,15 @@ def create_event():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": f"Error de servidor, {e}"}), 500
+
+@api.route('/search_events', methods=['POST'])
+def search_events():
+    data = request.get_json()
+    events = Events.query.all()
+    if data:
+        events = Events.query.filter(Events.title.ilike(f"%{data}%")).all()
+    events = list(map(lambda x: x.serialize(), events))
+    return jsonify(events), 200
 
 
 

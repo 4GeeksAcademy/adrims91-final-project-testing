@@ -71,8 +71,10 @@ export const CreateEventInputs = ({ closeModal }) => {
                         onChange={(e) => setDescription(e.target.value)}
                         value={description}
                         className="form-control mb-3 p-2"
-                        placeholder="Descripción"
+                        placeholder="Descripción (50/150 caracteres)"
                         type="text"
+                        minLength={'50'}
+                        maxLength={'150'}
                         required
                     />
                 </div>

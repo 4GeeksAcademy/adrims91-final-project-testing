@@ -12,23 +12,61 @@ export const Navbar = () => {
 	const { state } = useContext(Context)
 	const navigate = useNavigate()
 
-
-
 	useEffect(() => {
 		if (!localStorage.getItem('token')) {
 			navigate('/')
 		}
 	}, [state.token])
-	return (
-		<nav className="navbar">
-			<div><Link className="navbar-brand ms-4" to={'/'}><i className="fa-solid fa-house fa-xl"></i></Link></div>
-			<div><Searchbar /></div>
-			<div>
-				{!state.isAuthenticated ? <><Login />
-					<Register /></> : <><Link className="btn btn-primary" to={'/profile'}>Mi perfil</Link> <CreateEvent /> <Logout /> </>}
 
+	const renderAuthButtons = () => {
+		if (!state.isAuthenticated) {
+			return (
+				<>
+					<div className="mb-1">
+						<Login />
+					</div>
+					<div>
+						<Register />
+					</div>
+				</>
+			);
+		} else {
+			return (
+				<>
+					<div>
+						<Link className="btn btn-primary m-1" to={'/profile'}>Mi perfil</Link>
+					</div>
+					<div className="m-1">
+						<CreateEvent />
+					</div>
+					<div className="m-1">
+						<Logout />
+					</div>
+				</>
+			);
+		}
+	}
+
+	return (
+		<nav className="navbar navbar-expand-lg">
+			<div className="container-fluid">
+				<div>
+					<Link className="navbar-brand ms-4" to={'/'}>
+						<i className="fa-solid fa-house fa-xl"></i>
+					</Link>
+				</div>
+				<div className="flex-grow-1 d-flex justify-content-center">
+					<Searchbar />
+				</div>
+				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span className="navbar-toggler-icon"><i className="fa-solid fa-bars text-primary"></i></span>
+				</button>
+				<div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+					<div className="navbar-nav d-flex align-items-end">
+						{renderAuthButtons()}
+					</div>
+				</div>
 			</div>
 		</nav>
 	);
 };
-

@@ -25,9 +25,10 @@ export const Navbar = () => {
 			<div><Searchbar /></div>
 			<div>
 				{!state.isAuthenticated ? <><Login />
-					<Register /></> : <><Link className="btn btn-success" to={'/profile'}>Mi perfil</Link> <CreateEvent /> <Logout /> </>}
+					<Register /></> : <><Link className="btn btn-primary" to={'/profile'}>Mi perfil</Link> <CreateEvent /> <Logout /> </>}
 
 			</div>
 		</nav>
 	);
 };
+

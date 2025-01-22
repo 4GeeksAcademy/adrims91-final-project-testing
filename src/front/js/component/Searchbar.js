@@ -17,7 +17,7 @@ export const Searchbar = () => {
                 <div className="container-fluid">
                     <form onSubmit={handleSubmit} className="d-flex" role="search">
                         <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
-                        <button className="btn btn-outline-success" type="submit">Buscar</button>
+                        <button className="btn btn-outline-primary" type="submit">Buscar</button>
                     </form>
                 </div>
             </nav>

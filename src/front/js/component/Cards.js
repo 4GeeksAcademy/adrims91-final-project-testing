@@ -21,7 +21,7 @@ export const Cards = () => {
                             <img src={event.image} className="card-img-top" alt="Imagen" />
                             <div className="card-body">
                                 <h5 className="card-title">{event.title}</h5>
-                                <Link to={`/event/${event.id}`} className="btn btn-success">Ver detalles del evento</Link>
+                                <Link to={`/event/${event.id}`} className="btn btn-primary">Ver detalles del evento</Link>
                             </div>
                         </div>
                     </div>

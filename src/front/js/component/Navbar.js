@@ -21,7 +21,7 @@ export const Navbar = () => {
 	}, [state.token])
 	return (
 		<nav className="navbar">
-			<div><Link className="navbar-brand ms-2" to={'/'}>Home</Link></div>
+			<div><Link className="navbar-brand ms-4" to={'/'}><i className="fa-solid fa-house fa-xl"></i></Link></div>
 			<div><Searchbar /></div>
 			<div>
 				{!state.isAuthenticated ? <><Login />

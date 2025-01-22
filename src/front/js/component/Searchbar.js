@@ -10,6 +10,7 @@ export const Searchbar = () => {
         searchEvents(searchInput)
     }
 
+
     return (
         <>
             <nav className="navbar bg-body-tertiary">

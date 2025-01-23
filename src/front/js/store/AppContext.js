@@ -241,10 +241,24 @@ export const AppProvider = ({ children }) => {
             dispatch({ type: 'SEARCH_EVENTS_ERROR', payload: `Error de servidor, ${error}` })
         }
     }
+    const getCreatorDetails = async (event_id) => {
+        try {
+            const response = await fetch(`https://reimagined-space-computing-machine-4jg4r96r57jxh45g-3001.app.github.dev/api/creator_details/${event_id}`)
+            if (response.ok) {
+                const data = await response.json()
+                dispatch({ type: 'GET_CREATOR_DETAILS_SUCCESS', payload: { "creatorDetails": data } })
+            } else {
+                const errorData = await response.json()
+                dispatch({ type: 'GET_CREATOR_DETAILS_ERROR', payload: { "error": errorData.error } })
+            }
+        } catch (error) {
+            dispatch({ type: 'GET_CREATOR_DETAILS_ERROR', payload: { "error": error.message } })
+        }
+    }
 
 
     return (
-        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register, createEvent, deleteEvent, getUserData, updateUserData, getEvent, searchEvents }}>
+        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register, createEvent, deleteEvent, getUserData, updateUserData, getEvent, searchEvents, getCreatorDetails }}>
             {children}
         </Context.Provider>
     )

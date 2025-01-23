@@ -62,8 +62,8 @@ class Events(db.Model):
             'time': self.time,
             'image': self.image,
             'location': self.location,
-            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-            'updated_at': self.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'created_at': self.created_at.strftime('%d-%m-%Y %H:%M:%S'),
+            'updated_at': self.updated_at.strftime('%d-%m-%Y %H:%M:%S'),
             "user_id": self.user_id
         }
 

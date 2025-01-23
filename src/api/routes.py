@@ -51,13 +51,13 @@ def login():
 @jwt_required()
 def create_event():
     data = request.get_json()
-    if not "title" in data or not "description" in data:
+    if not "title" in data or not "description" in data or not "location" in data or not "price" in data or not "image" in data:
         return jsonify({"error": "Faltan datos obligatorios."}), 400
     try:
         date_str = data['date']
         time_str = data['time']
-        date = datetime.strptime(date_str, '%Y-%m-%d')
-        time = datetime.strptime(time_str, '%H:%M').time()
+        date = datetime.strptime(date_str, '%Y-%m-%d').date().strftime('%d-%m-%Y')
+        time = datetime.strptime(time_str, '%H:%M').time().strftime('%H:%M')
     except ValueError:
         return jsonify({"error": "Formato de fecha u hora incorrecto."}), 400
 
@@ -160,3 +160,8 @@ def update_user_data():
     db.session.commit()
     return jsonify({"message": "Datos actualizados correctamente."})
     
+@api.route('/creator_details/<int:event_id>', methods=['GET'])
+def get_creator_details(event_id):
+    event = Events.query.get(event_id)
+    creator = User.query.filter_by(id=event.user_id).first()
+    return jsonify([creator.serialize()])

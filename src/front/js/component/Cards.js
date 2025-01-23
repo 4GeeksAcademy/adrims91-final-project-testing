@@ -14,7 +14,7 @@ export const Cards = () => {
         <div className="container mt-5 mb-5 text-center fs-3">
             {state.events.length > 0 && <h2 className="mb-3">Eventos Disponibles</h2>}
             <div className="row justify-content-center row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                {state.events.length !== 0 ? state.events.map((event, index) => (
+                {state.events.length !== 0 ? state.events.map(event => (
                     <div key={event.id} className="col">
                         <div className="card shadow-sm border-light rounded">
                             <p className="delete-btn fs-3" onClick={() => deleteEvent(event.id)}>x</p>

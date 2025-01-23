@@ -6,7 +6,8 @@ export const initialState = {
     message: null,
     events: [],
     eventDetails: [],
-    userData: []
+    userData: [],
+    creatorDetails: []
 }
 
 export const AppReducer = (state, action) => {
@@ -111,6 +112,16 @@ export const AppReducer = (state, action) => {
                 events: action.payload.searchedEvents
             }
         case 'SEARCH_EVENTS_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
+        case 'GET_CREATOR_DETAILS_SUCCESS':
+            return {
+                ...state,
+                creatorDetails: action.payload.creatorDetails
+            }
+        case 'GET_CREATOR_DETAILS_ERROR':
             return {
                 ...state,
                 error: action.payload.error

@@ -26,7 +26,7 @@ export const Login = () => {
 
     return (
         <>
-            <button onClick={openModal} type="button" className="btn btn-primary me-2">
+            <button onClick={openModal} type="button" className="btn btn-primary me-2 button">
                 Iniciar sesión
             </button>
             <div ref={modalRef} className="modal fade" tabIndex="-1" style={{ display: 'none' }} aria-hidden="true">

@@ -34,7 +34,7 @@ export const Navbar = () => {
 			return (
 				<>
 					<div>
-						<Link className="btn btn-primary m-1" to={'/profile'}>Mi perfil</Link>
+						<Link className="btn btn-primary m-1 button" to={'/profile'}>Mi perfil</Link>
 					</div>
 					<div className="m-1">
 						<CreateEvent />

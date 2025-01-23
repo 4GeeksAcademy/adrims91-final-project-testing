@@ -6,7 +6,7 @@ export const Logout = () => {
     const { logout } = useContext(Context)
 
     return (
-        <button onClick={logout} className="btn btn-danger me-2">
+        <button onClick={logout} className="btn btn-danger button">
             Cerrar sesión
         </button>
     )

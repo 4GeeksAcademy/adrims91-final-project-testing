@@ -16,7 +16,7 @@ export const CreateEvent = () => {
     }
     return (
         <>
-            <button onClick={openModal} type="button" className="btn btn-primary">
+            <button onClick={openModal} type="button" className="btn btn-primary button">
                 Crear Evento
             </button>
             <div ref={modalRef} className="modal fade" style={{ display: 'none' }} data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

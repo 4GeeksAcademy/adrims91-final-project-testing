@@ -48,7 +48,7 @@ export const Navbar = () => {
 	}
 
 	return (
-		<nav className="navbar navbar-expand-lg">
+		<nav className="navbar">
 			<div className="container-fluid">
 				<div>
 					<Link className="navbar-brand ms-4" to={'/'}>

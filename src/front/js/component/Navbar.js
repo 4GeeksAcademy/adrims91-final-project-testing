@@ -52,7 +52,7 @@ export const Navbar = () => {
 			<div className="container-fluid">
 				<div>
 					<Link className="navbar-brand ms-4" to={'/'}>
-						<i className="fa-solid fa-house fa-xl"></i>
+						<i className="fa-solid fa-house fa"></i>
 					</Link>
 				</div>
 				<div className="flex-grow-1 d-flex justify-content-center">

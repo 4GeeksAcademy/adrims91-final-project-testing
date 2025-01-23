@@ -26,7 +26,7 @@ export const EventDetails = () => {
                             <p className="card-text text-muted"><strong>Fecha:</strong> {event.date}</p>
                             <p className="card-text text-muted"><strong>Hora:</strong> {event.time}</p>
                             {state.creatorDetails.map(creator => (
-                                <p key={creator.id} className="card-text text-danger">Evento creado por: {creator.first_name} el día {creator.created_at}</p>
+                                <p key={creator.id} className="card-text text-danger">Evento creado por {creator.first_name} el día {creator.created_at}</p>
                             ))}
                         </div>
                     </div>

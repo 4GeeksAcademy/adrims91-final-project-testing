@@ -168,3 +168,27 @@ def get_creator_details(event_id):
     event = Events.query.get(event_id)
     creator = User.query.filter_by(id=event.user_id).first()
     return jsonify([creator.serialize()])
+@api.route('/favorites/<int:event_id>', methods=['POST'])
+@jwt_required()
+def add_favorite(event_id):
+    user_username = get_jwt_identity()
+    event = Events.query.filter_by(id=event_id).first()
+    user = User.query.filter_by(username=user_username).first()
+    if not event:
+        return jsonify({"error": "Evento no encontrado"}), 404
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    favorite = Favorite.query.filter_by(events_id=event_id, user_id=user.id).first()
+    if favorite:
+        return jsonify({"error": "Ya existe este favorito"}), 400
+    new_favorite = Favorite(events_id=event_id, user_id=user.id)
+    try:
+        db.session.add(new_favorite)
+        db.session.commit()
+        return jsonify({"message": "Favorito añadido correctamente"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)})
+@api.route('/favorites/<int:event_id>')
+def get_favorites(event_id):
+    favorites = Favorite.query.get(event_id)
+    favorites = list(map(lambda x: x.serialize(), favorites))

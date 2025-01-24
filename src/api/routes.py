@@ -45,7 +45,7 @@ def login():
     user = User.query.filter_by(username=data['username']).first()
     if not user:
         return jsonify({"error": "El usuario no existe."}), 404
-    if check_password_hash(data['password'], user.password ):
+    if not check_password_hash(user.password, data['password']):
         return jsonify({"error": "Contraseña incorrecta."}), 401
     token = create_access_token(identity=user.username, expires_delta=timedelta(days=5))
     return jsonify({"message": "Login correcto.", "token": token})
@@ -172,8 +172,8 @@ def get_creator_details(event_id):
 @jwt_required()
 def add_favorite(event_id):
     user_username = get_jwt_identity()
-    event = Events.query.filter_by(id=event_id).first()
     user = User.query.filter_by(username=user_username).first()
+    event = Events.query.filter_by(id=event_id).first()
     if not event:
         return jsonify({"error": "Evento no encontrado"}), 404
     if not user:
@@ -187,8 +187,10 @@ def add_favorite(event_id):
         db.session.commit()
         return jsonify({"message": "Favorito añadido correctamente"}), 200
     except Exception as e:
+        db.session.rollback()
         return jsonify({"error": str(e)})
-@api.route('/favorites/<int:event_id>')
+
+@api.route('/favorites/<int:event_id>', methods=['GET'])
 def get_favorites(event_id):
-    favorites = Favorite.query.get(event_id)
-    favorites = list(map(lambda x: x.serialize(), favorites))
+    event = Events.query.filter_by(id=event_id).first()
+    return jsonify(event.favorited_by.username), 200

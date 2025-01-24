@@ -49,6 +49,7 @@ class Events(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    favorited_by = db.relationship('User', backref='favorited_by')
 
     def __repr__(self):
         return f"<Events {self.title} - {self.date} {self.time}>"
@@ -68,7 +69,7 @@ class Events(db.Model):
         }
 
 class Favorite(db.Model):
-    id = id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     events_id = db.Column(db.Integer, db.ForeignKey('events.id'))
 

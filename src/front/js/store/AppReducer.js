@@ -7,7 +7,8 @@ export const initialState = {
     events: [],
     eventDetails: [],
     userData: [],
-    creatorDetails: []
+    creatorDetails: [],
+    favorites: []
 }
 
 export const AppReducer = (state, action) => {
@@ -122,6 +123,26 @@ export const AppReducer = (state, action) => {
                 creatorDetails: action.payload.creatorDetails
             }
         case 'GET_CREATOR_DETAILS_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
+        case 'GET_FAVORITES_SUCCESS':
+            return {
+                ...state,
+                favorites: action.payload.favorites
+            }
+        case 'GET_FAVORITES_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
+        case 'ADD_FAVORITES_SUCCESS':
+            return {
+                ...state,
+                message: action.payload.message
+            }
+        case 'ADD_FAVORITES_ERROR':
             return {
                 ...state,
                 error: action.payload.error

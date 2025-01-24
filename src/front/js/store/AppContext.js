@@ -255,10 +255,44 @@ export const AppProvider = ({ children }) => {
             dispatch({ type: 'GET_CREATOR_DETAILS_ERROR', payload: { "error": error.message } })
         }
     }
+    const addFavorite = async (event_id) => {
+        const token = localStorage.getItem('token')
+        try {
+            const response = await fetch(`https://reimagined-space-computing-machine-4jg4r96r57jxh45g-3001.app.github.dev/api/favorites/${event_id}`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            })
+            if (response.ok) {
+                dispatch({ type: 'ADD_FAVORITE_SUCCESS', payload: { "message": 'Favorito añadido correctamente' } }), 201
+            } else {
+                const errorData = await response.json()
+                dispatch({ type: 'ADD_FAVORITE_ERROR', payload: { "error": errorData.error } }), 404
+            }
+        } catch (error) {
+            dispatch({ type: 'ADD_FAVORITE_ERROR', payload: { "error": error.message } })
+        }
+    }
+    const getFavorites = async (event_id) => {
+        try {
+            const response = await fetch(`https://reimagined-space-computing-machine-4jg4r96r57jxh45g-3001.app.github.dev/api/favorites/${event_id}`,)
+            if (response.ok) {
+                const data = await response.json()
+                dispatch({ type: 'GET_FAVORITES_SUCCESS', payload: { "favorites": data } }), 200
+            } else {
+                const errorData = await response.json()
+                dispatch({ type: 'GET_FAVORITES_ERROR', payload: { "error": errorData.error } }), 404
+            }
+        } catch (error) {
+            dispatch({ type: 'GET_FAVORITES_ERROR', payload: { "error": error.message } })
+        }
+    }
 
 
     return (
-        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register, createEvent, deleteEvent, getUserData, updateUserData, getEvent, searchEvents, getCreatorDetails }}>
+        <Context.Provider value={{ state, dispatch, login, getEvents, logout, register, createEvent, deleteEvent, getUserData, updateUserData, getEvent, searchEvents, getCreatorDetails, getFavorites, addFavorite }}>
             {children}
         </Context.Provider>
     )

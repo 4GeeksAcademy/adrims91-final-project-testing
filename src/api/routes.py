@@ -22,10 +22,13 @@ def create_user():
     print(data)
     if "username" not in data or "email" not in data or "password" not in data:
         return jsonify({"error": "Faltan datos obligatorios."}), 400
+    if len(data['password']) < 8:
+        return jsonify({"error": "La contraseña debe tener más de 8 caracteres"}), 400
     existing_user = User.query.filter_by(username=data['username']).first()
     if existing_user:
         return jsonify({"error": "El usuario ya existe."}), 400
-    new_user = User(username=data['username'], email=data['email'], password=data['password'], is_active=True)
+    hashed_password = generate_password_hash(data['password'])
+    new_user = User(username=data['username'], email=data['email'], password=hashed_password, is_active=True)
     try:
         db.session.add(new_user)
         db.session.commit()
@@ -42,7 +45,7 @@ def login():
     user = User.query.filter_by(username=data['username']).first()
     if not user:
         return jsonify({"error": "El usuario no existe."}), 404
-    if data['password'] != user.password:
+    if check_password_hash(data['password'], user.password ):
         return jsonify({"error": "Contraseña incorrecta."}), 401
     token = create_access_token(identity=user.username, expires_delta=timedelta(days=5))
     return jsonify({"message": "Login correcto.", "token": token})

@@ -55,7 +55,11 @@ export const Register = () => {
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="inputPassword" className="form-label">Contraseña</label>
-                                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" className="form-control shadow" id="inputPassword" />
+                                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="password"
+                                        minLength={'8'}
+                                        className="form-control shadow" id="inputPassword"
+                                        placeholder="8 caracteres mínimo"
+                                    />
                                 </div>
                                 <button type="submit" className="btn btn-success">Enviar</button>
                             </form>

@@ -15,7 +15,8 @@ class User(db.Model):
     profile_image = db.Column(db.String(150), unique=False, nullable=True)
     bio = db.Column(db.String(250), unique=False, nullable=True)
     residence = db.Column(db.String(50), unique=False, nullable=True)
-    events = db.relationship('Events', backref='user')
+    events = db.relationship('Events', backref='user_event')  # Cambié el backref a 'user_event'
+    favorites = db.relationship('Favorite', backref='user_favorite')  # Cambié el backref a 'user_favorite'
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
@@ -49,7 +50,7 @@ class Events(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    favorited_by = db.relationship('User', backref='favorited_by')
+    favorites = db.relationship('Favorite', backref='event_favorite')  # Cambié el backref a 'event_favorite'
 
     def __repr__(self):
         return f"<Events {self.title} - {self.date} {self.time}>"
@@ -72,13 +73,16 @@ class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     events_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+    user = db.relationship('User', backref='user_favorites')  # Cambié el backref a 'user_favorites'
+    event = db.relationship('Events', backref='event_favorites')  # Cambié el backref a 'event_favorites'
 
     def __repr__(self):
         return f"<Favorite {self.id}>"
-    
+
     def serialize(self):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "events_id": self.events_id
+            "events_id": self.events_id,
+            "users_username": [user.serialize() for user in self.user.username]
         }

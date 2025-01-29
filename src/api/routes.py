@@ -193,4 +193,5 @@ def add_favorite(event_id):
 @api.route('/favorites/<int:event_id>', methods=['GET'])
 def get_favorites(event_id):
     event = Events.query.filter_by(id=event_id).first()
-    return jsonify(event.favorited_by.username), 200
+    fav_serialized = [fav.user.username for fav in event.favorites]
+    return jsonify(fav_serialized), 200

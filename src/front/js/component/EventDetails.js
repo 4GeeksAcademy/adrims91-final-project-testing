@@ -5,14 +5,18 @@ import "../../styles/eventDetails.css"
 
 export const EventDetails = () => {
 
-    const { state, getEvent, getCreatorDetails, getFavorites } = useContext(Context);
+    const { state, getEvent, getCreatorDetails, getFavorites, addFavorite } = useContext(Context);
     const { eventId } = useParams();
 
     useEffect(() => {
-        getEvent(eventId);
         getCreatorDetails(eventId);
+        getEvent(eventId);
         getFavorites(eventId)
-    }, [eventId]);
+    }, [eventId, state.message]);
+
+
+
+
 
     return (
         <div className="container mt-5">
@@ -26,10 +30,18 @@ export const EventDetails = () => {
                             <p className="card-text">{event.description}</p>
                             <p className="card-text text-muted"><strong>Fecha:</strong> {event.date}</p>
                             <p className="card-text text-muted"><strong>Hora:</strong> {event.time}</p>
+
                             {state.favorites && <div><p className="card-text">Le gusta a: {state.favorites}</p></div>}
                             {state.creatorDetails.map(creator => (
                                 <p key={creator.id} className="card-text text-danger">Evento creado por {creator.username} el día {creator.created_at}</p>
                             ))}
+                        </div>
+                        <div className="card-footer mt-2 text-center">
+                            {!state.favorites.some(fav => fav.user_id === state.userData.id) ? <i onClick={() => {
+                                addFavorite(event.id)
+                            }} className="fa-regular fa-heart fa-xl text-danger"></i> : <i className="fa-solid fa-heart fa-xl"></i>}
+                            {state.message && <div><p>{state.message}</p></div>}
+                            {state.error && <div><p>{state.error}</p></div>}
                         </div>
                     </div>
                 </div>

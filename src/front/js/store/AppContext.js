@@ -267,6 +267,9 @@ export const AppProvider = ({ children }) => {
             })
             if (response.ok) {
                 dispatch({ type: 'ADD_FAVORITE_SUCCESS', payload: { "message": 'Favorito añadido correctamente' } }), 201
+                setTimeout(() => {
+                    dispatch({ type: 'CLEAR_MESSAGES' })
+                }, 1500);
             } else {
                 const errorData = await response.json()
                 dispatch({ type: 'ADD_FAVORITE_ERROR', payload: { "error": errorData.error } }), 404
@@ -280,7 +283,7 @@ export const AppProvider = ({ children }) => {
             const response = await fetch(`https://reimagined-space-computing-machine-4jg4r96r57jxh45g-3001.app.github.dev/api/favorites/${event_id}`,)
             if (response.ok) {
                 const data = await response.json()
-                dispatch({ type: 'GET_FAVORITES_SUCCESS', payload: { "favorites": data } }), 200
+                dispatch({ type: 'GET_FAVORITES_SUCCESS', payload: { "favorites": data.favorites } }), 200
             } else {
                 const errorData = await response.json()
                 dispatch({ type: 'GET_FAVORITES_ERROR', payload: { "error": errorData.error } }), 404

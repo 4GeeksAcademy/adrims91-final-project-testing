@@ -194,4 +194,4 @@ def add_favorite(event_id):
 def get_favorites(event_id):
     event = Events.query.filter_by(id=event_id).first()
     fav_serialized = [fav.user.username for fav in event.favorites]
-    return jsonify(fav_serialized), 200
+    return jsonify({"favorites": fav_serialized}), 200

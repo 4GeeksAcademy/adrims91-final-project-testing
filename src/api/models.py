@@ -72,7 +72,7 @@ class Events(db.Model):
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    events_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
     user = db.relationship('User', backref='user_favorites')  # Cambié el backref a 'user_favorites'
     event = db.relationship('Events', backref='event_favorites')  # Cambié el backref a 'event_favorites'
 
@@ -83,6 +83,6 @@ class Favorite(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "events_id": self.events_id,
-            "users_username": [user.serialize() for user in self.user.username]
+            "event_id": self.event_id,
+            "users_username": self.user.username
         }

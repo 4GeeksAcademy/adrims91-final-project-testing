@@ -12,9 +12,7 @@ export const Cards = () => {
         getEvents();
     }, [state.userData, state.message]);
 
-    const existingFavorite = state.favorites.some(fav => fav.user_id == state.userData.id)
 
-    console.log(existingFavorite)
 
     return (
         <div className="container mt-5 mb-5 text-center fs-3">

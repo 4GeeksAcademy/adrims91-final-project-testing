@@ -178,10 +178,10 @@ def add_favorite(event_id):
         return jsonify({"error": "Evento no encontrado"}), 404
     if not user:
         return jsonify({"error": "Usuario no encontrado"}), 404
-    favorite = Favorite.query.filter_by(events_id=event_id, user_id=user.id).first()
+    favorite = Favorite.query.filter_by(event_id=event_id, user_id=user.id).first()
     if favorite:
         return jsonify({"error": "Ya existe este favorito"}), 400
-    new_favorite = Favorite(events_id=event_id, user_id=user.id)
+    new_favorite = Favorite(event_id=event_id, user_id=user.id)
     try:
         db.session.add(new_favorite)
         db.session.commit()
@@ -189,9 +189,30 @@ def add_favorite(event_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)})
+    
+@api.route('/favorites/<int:event_id>', methods=['DELETE'])
+@jwt_required()
+def delete_favorite(event_id):
+    user_username = get_jwt_identity()
+    user = User.query.filter_by(username=user_username).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    favorite = Favorite.query.filter_by(event_id=event_id, user_id=user.id).first()
+    if not favorite:
+        return jsonify({"error": "No existe este favorito"}), 404
+    try:
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify({"message": "Favorito eliminado correctamente"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)})
+
+
 
 @api.route('/favorites/<int:event_id>', methods=['GET'])
-def get_favorites(event_id):
+def get_favorites_username(event_id):
     event = Events.query.filter_by(id=event_id).first()
     fav_serialized = [fav.user.username for fav in event.favorites]
-    return jsonify({"favorites": fav_serialized}), 200
+    favorites_serialized = [fav.serialize() for fav in event.favorites]
+    return jsonify({"favoritesUsername": fav_serialized, "favorites": favorites_serialized}), 200

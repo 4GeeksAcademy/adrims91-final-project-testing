@@ -147,6 +147,16 @@ export const AppReducer = (state, action) => {
                 ...state,
                 error: action.payload.error
             }
+        case 'DELETE_FAVORITES_SUCCESS':
+            return {
+                ...state,
+                message: action.payload.message
+            }
+        case 'DELETE_FAVORITES_ERROR':
+            return {
+                ...state,
+                error: action.payload.error
+            }
         default:
             return state
     }

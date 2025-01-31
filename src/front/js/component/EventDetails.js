@@ -1,19 +1,18 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/AppContext";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "../../styles/eventDetails.css"
 
 export const EventDetails = () => {
 
-    const { state, getEvent, getCreatorDetails, getFavorites, addFavorite } = useContext(Context);
+    const { state, getEvent, getCreatorDetails, getFavorites, addFavorite, deleteFavorite } = useContext(Context);
     const { eventId } = useParams();
 
     useEffect(() => {
         getCreatorDetails(eventId);
         getEvent(eventId);
         getFavorites(eventId)
-    }, [eventId, state.message]);
-
+    }, [eventId]);
 
 
 
@@ -31,17 +30,17 @@ export const EventDetails = () => {
                             <p className="card-text text-muted"><strong>Fecha:</strong> {event.date}</p>
                             <p className="card-text text-muted"><strong>Hora:</strong> {event.time}</p>
 
-                            {state.favorites && <div><p className="card-text">Le gusta a: {state.favorites}</p></div>}
+                            {state.favoritesUsername && <div><p className="card-text">Le gusta a: {state.favoritesUsername}</p></div>}
                             {state.creatorDetails.map(creator => (
-                                <p key={creator.id} className="card-text text-danger">Evento creado por {creator.username} el día {creator.created_at}</p>
+                                <p key={creator.id} className="card-text">Evento creado por <Link className="card-text" to={`/creator-details/${creator.id}`}><strong>{creator.username}</strong></Link> el día {creator.created_at}</p>
                             ))}
                         </div>
                         <div className="card-footer mt-2 text-center">
-                            {!state.favorites.some(fav => fav.user_id === state.userData.id) ? <i onClick={() => {
+                            {!state.favorites.some(fav => fav.event_id === event.id) ? <i onClick={() => {
                                 addFavorite(event.id)
-                            }} className="fa-regular fa-heart fa-xl text-danger"></i> : <i className="fa-solid fa-heart fa-xl"></i>}
-                            {state.message && <div><p>{state.message}</p></div>}
-                            {state.error && <div><p>{state.error}</p></div>}
+                            }} className="fa-regular fa-heart fa-xl text-danger"></i> : <i onClick={() => {
+                                deleteFavorite(event.id)
+                            }} className="fa-solid fa-heart fa-xl"></i>}
                         </div>
                     </div>
                 </div>
